@@ -74,3 +74,18 @@ export default c.g;
 /**
  * ES6 Dynamic imports for handlers on call.
  */
+
+
+// Examples
+/**
+const cmp = v;
+
+cmp.
+    .state({isClicked : false})
+    .onclick(function(){
+        this.setState({isClicked: true})
+    })
+    .render`
+        <button onclick=${cmp.handleClick}>${cmp.state.isClicked ? 'Clicked' : 'Not Clicked'}</button>
+    `
+ */
