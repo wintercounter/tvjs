@@ -5,25 +5,32 @@
     const t = v;
 
     (async () => t
-            .onclick(function handleClick(ev, ev2) {
-                console.log(ev, ev2)
-            })
-            .render('main')`
-        <h1>Loading, please wait</h1>
-    `
-            .blackhole(await pomis())
-            .render('main')`
-        <h2>Almost there</h2>
-    `
-            .blackhole((t.wow = [1,2]))
-            .render('h2')`
-        <a href="#" onclick=${t.handleClick}>Link</a>
-        ${(t.smth = await pomis()) && t.smth}
-        ${t.wow.map(num => t.wire()`<div>${num}</div>`)}
-    `)()
+        .on(function handleClick(ev, ev2) {
+            console.log(ev, ev2)
+        })
+        .render('main')`
+            <h1>Loading, please wait</h1>
+        `
+        .blackhole(await pomis())
+        .render('main')`
+            <h2>Almost there</h2>
+        `
+        .blackhole((t.wow = [1,2]))
+        .render('h2')(async r => r`
+            <a href="#" onclick=${t.handleClick}>Link</a>
+            ${(t.smth = await pomis()) && t.smth}
+            ${t.wow.map(num => `<div>${num}</div>`)}
+        `)
+    )()
 
     function pomis (){
         return new Promise(resolve => setTimeout(() => resolve('pomis'), 1500))
     }
 </script>
 <main></main>
+
+<!--
+.render('main')`
+    <h1>Loading, please wait</h1>
+`
+-->

@@ -2,21 +2,27 @@ import hyper, {wire, Component} from './node_modules/hyperhtml/min.js';
 
 function gs() {
     const _c = Symbol()
-    const _s = Symbol();
-    const _d = Symbol();
-    const _tpl = Symbol();
+    const _ci = Symbol()
+    const _s = Symbol()
+    const _d = Symbol()
+    const _tpl = Symbol()
     const _ts = Object.prototype.toString
     const o =  {
         [_s] : {},
-        state(s = {}) {
-            Object.assign(o[_s], s);
+        defaultState(s = {}) {
+            Object.assign(o[_s], s)
             return o
         },
-        onclick(f = function () {console.log('onclick')}) {
+        setState(s = {}) {
+            o[_ci].setState(s)
+            return o
+        },
+        get state(){
+            return o[_ci] ? o[_ci].state : o[_s]
+        },
+        on(f = function () {console.log('on')}) {
             const {name:n} = f
-            const na = 'handleClick'
-            o[n ? n : na] = f
-            console.info('onclick', o)
+            o[n] = f
             return o
         },
         get render() {
@@ -24,18 +30,27 @@ function gs() {
                 return function(...a) {
                     o[_c] = class extends Component {
                         get defaultState() {return o[_s]}
-                        static get _tpl() { return a }
-                        render() {
+                        async render() {
                             o[_s] = this.state
-                            return this.html(...a)
+                            if ('raw' in a[0]) {
+                                return this.html(...a)
+                            }
+                            else {
+                                const x = a[0]((...ar) => o[_tpl] = ar)
+                                if (x.then) {
+                                    await x;
+                                    return o.render(d)(...o[_tpl])
+                                }
+                                return this.html(...o[_tpl])
+                            }
                         }
                     }
-
+                    o[_ci] = new o[_c]
                     o[_d] = hyper(
                         _ts.call(d) === "[object String]"
                             ? document.querySelector(d)
                             : d
-                    )`${new o[_c]}`
+                    )`${o[_ci]}`
                     return o
                 }
             }
