@@ -26,8 +26,9 @@ function gs() {
             return o
         },
         get render() {
-            return function(d = document.body) {
-                return function(...a) {
+            return function(...p) {
+                let d = p[0];
+                const r = function(...a) {
                     o[_c] = class extends Component {
                         get defaultState() {return o[_s]}
                         async render() {
@@ -41,6 +42,7 @@ function gs() {
                                     await x;
                                     return o.render(d)(...o[_tpl])
                                 }
+                                console.log(o[_tpl])
                                 return this.html(...o[_tpl])
                             }
                         }
@@ -52,7 +54,12 @@ function gs() {
                             : d
                     )`${o[_ci]}`
                     return o
+                };
+                if (typeof p[0] === 'object' && 'raw' in p[0]) {
+                    d = document.body;
+                    return r(...p);
                 }
+                return r;
             }
         },
         blackhole(fn) {

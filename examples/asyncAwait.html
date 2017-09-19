@@ -8,11 +8,11 @@
         .on(function handleClick(ev, ev2) {
             console.log(ev, ev2)
         })
-        .render('main')`
+        .render('body')`
             <h1>Loading, please wait</h1>
         `
         .blackhole(await pomis())
-        .render('main')`
+        .render('h1')`
             <h2>Almost there</h2>
         `
         .blackhole((t.wow = [1,2]))
