@@ -1,6 +1,6 @@
 import app from '../../tvjs.js';
 
-app
+const todoApp = app
 .defaultState({
 	todos : [
 		{
@@ -33,7 +33,7 @@ app
 })
 .handleFilter(({ target : { dataset : { filter } }}) => app.setState({ filter }))
 .getFiltered(() => app.state.todos.filter(todo => !app.state.filter || todo.status === app.state.filter))
-.render('.todoapp')(r => r`
+.render(false)(r => r`
 	<header class="header">
 		<h1>todos</h1>
 		<input class="new-todo" placeholder="What needs to be done?" autofocus onblur=${app.handleAdd} />
@@ -77,3 +77,6 @@ app
 		<button class="clear-completed" onclick=${app.handleClear}>Clear completed</button>
 	</footer>
 `)
+
+todoApp.render('.todoapp')
+todoApp.render('.todoapp2')

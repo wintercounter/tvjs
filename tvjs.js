@@ -1,4 +1,4 @@
-import hyper, {wire, Component} from './node_modules/hyperhtml/min.js';
+import hyper, {wire, Component} from './node_modules/hyperhtml/min.js'
 
 function gs() {
     const _c = Symbol()
@@ -7,50 +7,55 @@ function gs() {
     const _d = Symbol()
     const _tpl = Symbol()
     const _ts = Object.prototype.toString
-    let o =  {
+    const _as = Symbol()
+    let po
+    const o =  {
         [_s] : {},
         defaultState(s = {}) {
             Object.assign(o[_s], s)
-            return o
+            return po
         },
         setState(s = {}) {
             o[_ci].setState(s)
-            return o
+            return po
         },
         get state(){
             return o[_ci] ? o[_ci].state : o[_s]
         },
         get render() {
             return function(...p) {
-                let d = p[0];
+                let d = p[0]
                 const r = function(...a) {
-                    o[_c] = class extends Component {
+                    o[_tpl] = a
+                    o[_c] = o[_c] || class extends Component {
                         get defaultState() {return o[_s]}
                         async render() {
                             o[_s] = this.state
-                            if ('raw' in a[0]) {
-                                o[_tpl] = a
-                            }
-                            else {
+                            console.log(o[_tpl])
+                            if (!('raw' in a)) {
                                 const x = a[0]((...ar) => o[_tpl] = ar)
                                 if (x.then) {
                                     await x
                                     return o.render(d)(...o[_tpl])
                                 }
                             }
-                            console.log(o[_tpl])
                             return this.html(...o[_tpl])
                         }
                     }
+                    if (d === false) {return po}
                     o[_ci] = new o[_c]
                     o[_d] = hyper(
                         _ts.call(d) === "[object String]"
                             ? document.querySelector(d)
                             : d
                     )`${o[_ci]}`
-                    return o
-                };
-                if (typeof p[0] === 'object' && 'raw' in p[0]) {
+                    return po
+                }
+                if (_c in o && _ts.call(d) === "[object String]") {
+                    d = document.querySelector(d)
+                    return r(...o[_tpl])
+                }
+                else if ((typeof p[0] === 'object' && 'raw' in p[0])) {
                     d = document.body
                     return r(...p)
                 }
@@ -59,27 +64,27 @@ function gs() {
         },
         blackhole(fn) {
             _ts.call(fn) === '[object Function]' && fn()
-            return o
+            return po
         },
         testAfter(){
             console.log('after')
-            return o
+            return po
         },
         get wire() {
             return wire
         }
     }
-    o = new Proxy(o, {
+    po = new Proxy(o, {
         get(obj, prop) {
             return (prop in obj)
                 ? obj[prop]
                 : function(fn) {
                     obj[prop] = fn
-                    return o
+                    return po
                 }
         }
     });
-    return o
+    return po
 }
 
 let c = Object.defineProperty({}, 'g', {

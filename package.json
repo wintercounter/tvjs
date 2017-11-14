@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "hypercomponent": "^3.2.0",
     "hyperhtml": "^1.7.1"
   }
 }
