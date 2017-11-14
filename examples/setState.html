@@ -7,7 +7,7 @@
     const t = v;
     t
     .defaultState({ items : ['Old'] })
-    .on(function handleClick() {
+    .fn(function handleClick() {
         t.setState({ items : [...t.state.items, 'New'] })
     })
     .render('main')(r => r`

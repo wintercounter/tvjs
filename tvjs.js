@@ -7,7 +7,7 @@ function gs() {
     const _d = Symbol()
     const _tpl = Symbol()
     const _ts = Object.prototype.toString
-    const o =  {
+    let o =  {
         [_s] : {},
         defaultState(s = {}) {
             Object.assign(o[_s], s)
@@ -20,7 +20,7 @@ function gs() {
         get state(){
             return o[_ci] ? o[_ci].state : o[_s]
         },
-        on(f = function () {console.log('on')}) {
+        fn(f = function () {console.log('on')}) {
             const {name:n} = f
             o[n] = f
             return o
@@ -34,17 +34,17 @@ function gs() {
                         async render() {
                             o[_s] = this.state
                             if ('raw' in a[0]) {
-                                return this.html(...a)
+                                o[_tpl] = a
                             }
                             else {
                                 const x = a[0]((...ar) => o[_tpl] = ar)
                                 if (x.then) {
-                                    await x;
+                                    await x
                                     return o.render(d)(...o[_tpl])
                                 }
-                                console.log(o[_tpl])
-                                return this.html(...o[_tpl])
                             }
+                            console.log(o[_tpl])
+                            return this.html(...o[_tpl])
                         }
                     }
                     o[_ci] = new o[_c]
@@ -56,10 +56,10 @@ function gs() {
                     return o
                 };
                 if (typeof p[0] === 'object' && 'raw' in p[0]) {
-                    d = document.body;
-                    return r(...p);
+                    d = document.body
+                    return r(...p)
                 }
-                return r;
+                return r
             }
         },
         blackhole(fn) {
@@ -71,9 +71,19 @@ function gs() {
             return o
         },
         get wire() {
-            return wire;
+            return wire
         }
     }
+    o = new Proxy(o, {
+        get(obj, prop) {
+            return (prop in obj)
+                ? obj[prop]
+                : function(fn) {
+                    obj[prop] = fn
+                    return o
+                }
+        }
+    });
     return o
 }
 
