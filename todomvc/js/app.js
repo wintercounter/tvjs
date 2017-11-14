@@ -15,7 +15,7 @@ app
 	filter : undefined
 })
 .handleAdd(({ target, target : { value } }) => {
-	if (!value) return;
+	if (!value) return
 	const todos = [...app.state.todos, {
 		title : target.value,
 		status : 'uncompleted'
