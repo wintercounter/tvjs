@@ -5,9 +5,7 @@
     const t = v;
 
     (async () => t
-        .fn(function handleClick(ev, ev2) {
-            console.log(ev, ev2)
-        })
+        .handleClick((ev, ev2) => console.log(ev, ev2))
         .render('body')`
             <h1>Loading, please wait</h1>
         `

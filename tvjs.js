@@ -20,11 +20,6 @@ function gs() {
         get state(){
             return o[_ci] ? o[_ci].state : o[_s]
         },
-        fn(f = function () {console.log('on')}) {
-            const {name:n} = f
-            o[n] = f
-            return o
-        },
         get render() {
             return function(...p) {
                 let d = p[0];

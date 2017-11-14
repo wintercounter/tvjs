@@ -2,14 +2,8 @@
 <script type="module">
     import v from '../tvjs.js';
 
-    const x = 1;
-
-    const t = v;
-    t
-    .defaultState({ items : ['Old'] })
-    .fn(function handleClick() {
-        t.setState({ items : [...t.state.items, 'New'] })
-    })
+    v.defaultState({ items : ['Old'] })
+    .handleClick(() => t.setState({ items : [...t.state.items, 'New']}))
     .render('main')(r => r`
         <button onclick=${t.handleClick}>
             Add
