@@ -31,7 +31,6 @@ function gs() {
                         get defaultState() {return o[_s]}
                         async render() {
                             o[_s] = this.state
-                            console.log(o[_tpl])
                             if (!('raw' in a)) {
                                 const x = a[0]((...ar) => o[_tpl] = ar)
                                 if (x.then) {
@@ -43,7 +42,7 @@ function gs() {
                         }
                     }
                     if (d === false) {return po}
-                    o[_ci] = new o[_c]
+                    o[_ci] = o[_ci] || new o[_c]
                     o[_d] = hyper(
                         _ts.call(d) === "[object String]"
                             ? document.querySelector(d)

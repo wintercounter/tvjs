@@ -79,4 +79,3 @@ const todoApp = app
 `)
 
 todoApp.render('.todoapp')
-todoApp.render('.todoapp2')
