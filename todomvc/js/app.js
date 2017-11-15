@@ -26,11 +26,12 @@ const todoApp = app
 .handleClear(() => app.setState({ todos : app.state.todos.filter(todo => todo.status !== 'completed') }))
 .handleDestroy(({ target : { dataset : { id } }}) => app.setState({ todos : app.state.todos.filter((item, i) => i != id) }) )
 .handleToggle(({ target : { dataset : { id }, checked }}) => {
-	app.state.todos[id].status = checked
-		? 'completed'
-		: 'uncompleted'
+	app.state.todos[id].status = checked ? 'completed' : 'uncompleted'
 	app.setState()
 })
+.handleToggleAll(({ target : { checked }}) => app.setState({
+	todos: app.state.todos.map(todo => (todo.status = checked ? 'completed' : 'uncompleted') && todo)
+}))
 .handleFilter(({ target : { dataset : { filter } }}) => app.setState({ filter }))
 .getFiltered(() => app.state.todos.filter(todo => !app.state.filter || todo.status === app.state.filter))
 .render(false)(r => r`
@@ -40,7 +41,7 @@ const todoApp = app
 	</header>
 	<!-- This section should be hidden by default and shown when there are todos -->
 	<section class="main">
-		<input id="toggle-all" class="toggle-all" type="checkbox">
+		<input id="toggle-all" class="toggle-all" type="checkbox" onchange=${app.handleToggleAll} />
 			<label for="toggle-all">Mark all as complete</label>
 			<ul class="todo-list">
 				<!-- These are here just to show the structure of the list items -->
